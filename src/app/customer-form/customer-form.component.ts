@@ -10,6 +10,8 @@ import { CustomerServiceService } from '../customer-service.service';
 })
 export class CustomerFormComponent implements OnInit {
 
+  error: any;
+  errors: any = [] = new Array();
   form: FormGroup;
   fileNames: any = [];
   submitted = false;
@@ -138,6 +140,8 @@ export class CustomerFormComponent implements OnInit {
   }
 
   createCustomer() {
+    this.error = null;
+    this.errors = [];
     console.log(this.form.value);
     console.log(this.documents.value);
     const formData = new FormData();
@@ -151,8 +155,18 @@ export class CustomerFormComponent implements OnInit {
       this.fileNames.push('idProof');
     }
     formData.append('fileNames', this.fileNames);
-    this.service.postCustomerDetails(formData);
-    this.submitted = true;
+    this.service.postCustomerDetails(formData).subscribe(resp => {
+      console.log(resp);
+      this.submitted = true;
+    }, err => {
+      console.log(err);
+      if (err.error.errors) {
+        this.errors = err.error.errors;
+        console.log(this.errors);
+      }
+      this.error = err.error;
+      console.log(this.error);
+    });
   }
 
   selectAddressProof(event) {

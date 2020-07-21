@@ -12,11 +12,7 @@ export class CustomerServiceService {
 
   postCustomerDetails(formData: FormData) {
     // let headers = new HttpHeaders().set('Content-Type', 'multipart/form-data');
-    this.http.post(`${this.backendUrl}/createCustomer`, formData).subscribe(resp => {
-      console.log(resp);
-    }, err => {
-      console.log(err);
-    });
+    return this.http.post(`${this.backendUrl}/createCustomer`, formData);
   }
 
   getAllCustomers(): any {

@@ -1,7 +1,14 @@
-<div class="card card-body  col-md-6 offset-3 mt-5" *ngIf="submitted">
+<div class="card card-body  col-md-6 offset-3 mt-2" *ngIf="submitted">
     <h3 class="text-center">Submitted Successfully</h3>
 </div>
-<div class="card card-body  col-md-6 offset-3 mt-5" *ngIf="!submitted">
+<div class="card card-body  col-md-6 offset-3 mt-1" *ngIf="error && errors.length == 0">
+    <small class="text-center text-danger">{{error.message}}</small>
+</div>
+<div class="card card-body  col-md-6 offset-3 mt-1" *ngIf="errors.length > 0">
+    <small class="text-center text-danger" *ngIf="error">{{error.message}}</small>
+    <small class="text-center text-danger" *ngFor="let err of errors">{{err}}</small>
+</div>
+<div class="card card-body  col-md-6 offset-3 mt-1" *ngIf="!submitted">
     <h3 class="text-center">Customer Details</h3>
     <div class=" card-body  col-md-12">
         <form [formGroup]="form" (ngSubmit)="createCustomer()" enctype="multipart/form-data">
