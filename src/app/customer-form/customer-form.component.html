@@ -1,0 +1,174 @@
+<div class="card card-body  col-md-6 offset-3 mt-5" *ngIf="submitted">
+    <h3 class="text-center">Submitted Successfully</h3>
+</div>
+<div class="card card-body  col-md-6 offset-3 mt-5" *ngIf="!submitted">
+    <h3 class="text-center">Customer Details</h3>
+    <div class=" card-body  col-md-12">
+        <form [formGroup]="form" (ngSubmit)="createCustomer()" enctype="multipart/form-data">
+            <div class="form-row ">
+                <div class="form-group col-md-6 ty-font user-input-wrp">
+                    <strong class="floating-label">First Name</strong>
+                    <input type="text" class="form-control inputText" id="firstName" name="firstName"
+                        formControlName='firstName' required>
+
+                    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="ty-errmsg ">
+                        <div *ngIf="firstName.errors?.required"> First Name is required * </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 ty-font user-input-wrp">
+                    <strong class="floating-label">Last Name</strong>
+                    <input type="text" class="form-control inputText" id="lastName" name="lastName"
+                        formControlName='lastName' required>
+                    <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="ty-errmsg ">
+                        <div *ngIf="lastName.errors?.required"> Last Name is required * </div>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6 ty-font user-input-wrp">
+                    <div class="form-group">
+                        <strong for="" id='strong'>Date Of Birth </strong>
+                        <input type="date" formControlName='dateOfBirth' name='dateOfBirth'
+                            class="form-control"
+                            [class.is-invalid]='dateOfBirth.invalid && dateOfBirth.touched'
+                            [class.is-valid]='dateOfBirth.valid'>
+                        <div *ngIf='dateOfBirth.invalid && dateOfBirth.touched'>
+                            <small class="text-danger" *ngIf='dateOfBirth.errors.required'>*this
+                                field is
+                                required</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div formArrayName="addresses">
+                <div class="mb-3 mt-2">
+                    <strong>Add Address</strong> <strong class="float-right"><button type="button"
+                            class="btn btn-outline-primary" (click)="addNewAddress()">+</button></strong>
+                </div>
+                <div *ngFor="let address of addresses.controls; let i=index">
+                    <strong>Address {{i + 1}}</strong>
+                    <strong class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="removeAddress(i)">X</button>
+                    </strong>
+                    <div [formGroupName]="i" class="form-row mt-3 border">
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">Line 1 </strong>
+                            <input type="text" formControlName="line1" class="form-control inputText" id="line1"
+                                name="line1">
+
+                        </div>
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">Line 2 </strong>
+                            <input type="text" formControlName="line2" class="form-control inputText" id="line2"
+                                name="line2">
+
+                        </div>
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong for="" id='label'>Country </strong>
+                            <select type="text" formControlName='country' name='country' class="form-control">
+                                <option>India</option>
+                                <option>Afghanistan</option>
+                                <option>American Samoa</option>
+                                <option>Andorra</option>
+                                <option>Angola</option>
+                                <option>Anguilla</option>
+                                <option>Antarctica</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">State </strong>
+                            <input type="text" formControlName="state" class="form-control inputText" id="state"
+                                name="state">
+                        </div>
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">City </strong>
+                            <input type="text" formControlName="city" class="form-control inputText" id="city"
+                                name="city">
+                        </div>
+                        <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">Pincode </strong>
+                            <input type="number" formControlName="pincode" class="form-control inputText" id="pincode"
+                                name="pincode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div formArrayName="emails">
+                <div class="mb-3 mt-2">
+                    <strong>Add Email</strong> <strong class="float-right"><button type="button"
+                            class="btn btn-outline-primary" (click)="addNewEmail()">+</button></strong>
+                </div>
+                <div *ngFor="let email of emails.controls; let i=index">
+                    <strong>Email {{i + 1}}</strong>
+                    <strong class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="removeEmail(i)">X</button>
+                    </strong>
+                    <div [formGroupName]="i" class="form-row mt-3 border">
+                        <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">Email</strong>
+                            <input type="email" formControlName="email" class="form-control inputText" id="email"
+                                name="email">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div formArrayName="phoneNumbers">
+                <div class="mb-3 mt-2">
+                    <strong>Add Phone Number</strong> <strong class="float-right"><button type="button"
+                            class="btn btn-outline-primary" (click)="addNewPhnNum()">+</button></strong>
+                </div>
+                <div *ngFor="let phoneNumber of phoneNumbers.controls; let i=index">
+                    <strong>Phone Number {{i + 1}}</strong>
+                    <strong class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="removePhoneNumber(i)">X</button>
+                    </strong>
+                    <div [formGroupName]="i" class="form-row mt-3 border">
+                        <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                            <strong class="floating-label">Phone Number</strong>
+                            <input type="number" formControlName="mobileNumber" class="form-control inputText"
+                                id="mobileNumber" name="mobileNumber">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div formGroupName="documents"> -->
+
+            <div class="form-row mt-1 border">
+                <strong>Identity Proof</strong> <br>
+                <div id="upload_button">
+                    <label id="fileType">
+                        <input type="file" id="identityProof" (change)="selectIdProof($event)">
+                        <span id="displayImage">Upload </span>
+                    </label> <br />
+                </div>
+                <small><b>Allowed files: Aadhar Card, Passport, VoterId, Driving Licence</b></small>
+            </div>
+            <div class="form-row mt-1 border">
+                <strong>Address Proof</strong> <br>
+                <div id="upload_button">
+                    <label id="fileType">
+                        <input type="file" id="addressProof" (change)="selectAddressProof($event)">
+                        <span id="displayImage">Upload </span>
+                    </label>
+                </div>
+                <small><b>Allowed files: Aadhar Card, Passport, Driving Licence</b></small>
+            </div>
+            <!-- </div> -->
+
+            <div class="row justify-content-around mt-4">
+                <div class="float-left ">
+                    <button type="reset" class="btn btn-primary " style="width: 150px;">Reset</button>
+                </div>
+                <div class="float-right ">
+                    <button type="submit" class="btn btn-primary " style="width: 150px;">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>

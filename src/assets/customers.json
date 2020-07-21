@@ -1,0 +1,147 @@
+{
+    "message": "Customers Details Loaded Successfully",
+    "customers": [
+        {
+            "customerId": 1,
+            "firstName": "Chandrasekhar",
+            "lastName": "Vemugadda",
+            "dateOfBirth": "2020-07-01",
+            "status": "active",
+            "emails": [
+                {
+                    "emailId": 3,
+                    "email": "chandu.teja.0557@gmail.com"
+                }
+            ],
+            "addresses": [
+                {
+                    "addressId": 2,
+                    "line1": "H.no-34/185, Kummari Street",
+                    "line2": "H.no-34/120, One Town",
+                    "country": "India",
+                    "state": "ANDHRA PRADESH",
+                    "city": "Kurnool",
+                    "pincode": 518001
+                }
+            ],
+            "phoneNumbers": [
+                {
+                    "mobileId": 4,
+                    "mobileNumber": 6301092850
+                }
+            ],
+            "documents": {
+                "documentId": 5,
+                "addressProof": null,
+                "identityProof": null,
+                "addressProofFileName": "voterId.pdf",
+                "identityProofFileName": "voterId.pdf"
+            }
+        },
+        {
+            "customerId": 18,
+            "firstName": "Niranjan",
+            "lastName": "Kumar",
+            "dateOfBirth": "1997-07-06",
+            "status": "active",
+            "emails": [
+                {
+                    "emailId": 20,
+                    "email": "chandu.teja.0557@gmail.com"
+                }
+            ],
+            "addresses": [
+                {
+                    "addressId": 19,
+                    "line1": "H.no - 34/127, VR Colony",
+                    "line2": "H.no - 34/127-A, VR Colony",
+                    "country": "India",
+                    "state": "ANDHRA PRADESH",
+                    "city": "Kurnool",
+                    "pincode": 518001
+                }
+            ],
+            "phoneNumbers": [
+                {
+                    "mobileId": 21,
+                    "mobileNumber": 7676566565
+                }
+            ],
+            "documents": {
+                "documentId": 22,
+                "addressProof": null,
+                "identityProof": null,
+                "addressProofFileName": "aadharcard.pdf",
+                "identityProofFileName": "aadharcard.pdf"
+            }
+        },
+        {
+            "customerId": 27,
+            "firstName": "Sreekanth",
+            "lastName": "Vemugadda",
+            "dateOfBirth": "1995-10-26",
+            "status": "active",
+            "emails": [
+                {
+                    "emailId": 29,
+                    "email": "sri@gmail.com"
+                }
+            ],
+            "addresses": [
+                {
+                    "addressId": 28,
+                    "line1": "H.no - 34/127, VR Colony",
+                    "line2": "H.no-34/120, One Town",
+                    "country": "India",
+                    "state": "ANDHRA PRADESH",
+                    "city": "Kurnool",
+                    "pincode": 518001
+                }
+            ],
+            "phoneNumbers": [
+                {
+                    "mobileId": 30,
+                    "mobileNumber": 6301092876
+                }
+            ],
+            "documents": {
+                "documentId": 31,
+                "addressProof": null,
+                "identityProof": null,
+                "addressProofFileName": "aadharcard.pdf",
+                "identityProofFileName": "aadharcard.pdf"
+            }
+        },
+        {
+            "customerId": 36,
+            "firstName": "Narendra",
+            "lastName": "Kumar",
+            "dateOfBirth": "1998-07-09",
+            "status": "active",
+            "emails": [
+                {
+                    "emailId": 38,
+                    "email": "narendra@gmail.com"
+                }
+            ],
+            "addresses": [
+                {
+                    "addressId": 37,
+                    "line1": "H.no - 34/127, VR Colony",
+                    "line2": "H.no - 34/127-A, VR Colony",
+                    "country": "India",
+                    "state": "ANDHRA PRADESH",
+                    "city": "Kurnool",
+                    "pincode": 518001
+                }
+            ],
+            "phoneNumbers": [
+                {
+                    "mobileId": 39,
+                    "mobileNumber": 7656565656
+                }
+            ],
+            "documents": null
+        }
+    ]
+}

@@ -1,0 +1,356 @@
+<div class="container-fluid">
+  <div class="row col-md-12 ml-2 mr-2 mt-4">
+    <h3 class="mr-4">Search Customer</h3>
+    <div class="col">
+      <form #search='ngForm' (ngSubmit)='searchCustomer(search)'>
+        <div class="row">
+          <div class="col-md-4 input-group mb-3">
+            <strong>FirstName :</strong>
+            <input type="firstName" name="firstName" #firstName='ngModel' ngModel id="firstName" class="form-control">
+          </div>
+          <div class="col-md-4 input-group mb-3">
+            <strong>Date Of Birth :</strong>
+            <input type="date" name="dateOfBirth" #dateOfBirth='ngModel' ngModel id="dateOfBirth" class="form-control">
+          </div>
+          <button type="submit" class="col-md-2 mb-3 btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row col-md-12 card card-body ml-2 mr-2 mt-4" *ngIf="searchedOne">
+    <h2>Customer Deatils <button type="button" class="btn btn-outline-danger float-right"
+        (click)="closeTable()">X</button></h2>
+    <table class="table table-bordered mt-1">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Address Proof</th>
+          <th scope="col">Identity Proof</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <!-- <th>{{i}}</th> -->
+          <td>{{searchedOne.firstName}}</td>
+          <td>{{searchedOne.lastName}}</td>
+          <td>{{searchedOne.dateOfBirth | date:'shortDate'}}</td>
+          <td><a href="">{{searchedOne.documents.addressProofFileName}}</a></td>
+          <td><a href="">{{searchedOne.documents.identityProofFileName}}</a></td>
+        </tr>
+      </tbody>
+      <!-- <tfoot *ngIf="submittedExpenses.length !==0 " class="table-dark">
+          <td colspan="4">Total Amount</td>
+          <td colspan="2">{{totalAmount}}</td>
+        </tfoot> -->
+    </table>
+
+  </div>
+
+  <div class="row col-md-12 card card-body ml-2 mr-2 mt-4" *ngIf="!searchedOne">
+    <h2>Customer Deatils</h2>
+    <table class="table table-bordered mt-1">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Address Proof</th>
+          <th scope="col" colspan="2">Identity Proof</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers | paginate: { itemsPerPage:4, currentPage:p}; let i = index "
+          >
+          <!-- <th>{{i}}</th> -->
+          <td><a (click)="updateCustomer(customer)" data-toggle="modal" data-target="#updateDetails">{{customer.firstName}}</a></td>
+          <td>{{customer.lastName}}</td>
+          <td>{{customer.dateOfBirth | date:'shortDate'}}</td>
+          <td *ngIf="customer.documents.addressProofFileName"><a href="">{{customer.documents.addressProofFileName}}</a></td>
+          <td *ngIf="!customer.documents.addressProofFileName">N/A</td>
+          <td *ngIf="customer.documents.identityProofFileName"><a href="">{{customer.documents.identityProofFileName}}</a></td>
+          <td *ngIf="!customer.documents.identityProofFileName">N/A</td>
+          <td><button type="button" class="btn btn-primary"
+              (click)="deleteCustomer(customer.customerId)">Delete</button></td>
+        </tr>
+      </tbody>
+      <!-- <tfoot *ngIf="submittedExpenses.length !==0 " class="table-dark">
+          <td colspan="4">Total Amount</td>
+          <td colspan="2">{{totalAmount}}</td>
+        </tfoot> -->
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+  </div>
+
+
+
+</div>
+<div class="modal fade" id="updateDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" *ngIf="service.selectedCustomer">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="card card-body  col-md-6 offset-3 mt-5" *ngIf="submitted">
+          <h3 class="text-center">Submitted Successfully</h3>
+          <button type="button" class="btn btn-secondary" click="setSubmitted()" data-dismiss="modal">Close</button>
+        </div>
+        <div class="card card-body  mt-2" *ngIf="!submitted">
+          <h3 class="text-center">Update Customer Details</h3>
+
+          <form [formGroup]="updateForm" (ngSubmit)="updateCustomerDetails()" enctype="multipart/form-data">
+            <input type="hidden" class="form-control inputText" id="customerId" name="customerId"
+              formControlName='customerId' ngModel [(ngModel)]="service.selectedCustomer.customerId" required>
+            <div class="form-row ">
+              <div class="form-group col-md-6 ty-font user-input-wrp">
+                <strong class="floating-label">First Name</strong>
+                <input type="text" class="form-control inputText" id="firstName" name="firstName" ngModel
+                  [(ngModel)]="service.selectedCustomer.firstName" formControlName='firstName' required>
+
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="ty-errmsg ">
+                  <div *ngIf="firstName.errors?.required"> First Name is required * </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6 ty-font user-input-wrp">
+                <strong class="floating-label">Last Name</strong>
+                <input type="text" class="form-control inputText" id="lastName" name="lastName" ngModel
+                  [(ngModel)]="service.selectedCustomer.lastName" formControlName='lastName' required>
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="ty-errmsg ">
+                  <div *ngIf="lastName.errors?.required"> Last Name is required * </div>
+                </div>
+
+              </div>
+              <div class="form-group col-md-6 ty-font user-input-wrp">
+                <div class="form-group">
+                  <strong for="" id='strong'>Date Of Birth </strong>
+                  <input type="date" formControlName='dateOfBirth' name='dateOfBirth' ngModel
+                    [(ngModel)]="service.selectedCustomer.dateOfBirth" class="form-control" required>
+                  <div *ngIf='dateOfBirth.invalid && dateOfBirth.touched'>
+                    <small class="text-danger" *ngIf='dateOfBirth.errors.required'>*this
+                      field is
+                      required</small>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div formArrayName="addresses">
+              <div class="mb-3 mt-2">
+                <strong>Add Address</strong> <strong class="float-right"><button type="button"
+                    class="btn btn-outline-primary" (click)="addNewAddress()">+</button></strong>
+              </div>
+              <div *ngFor="let address of addresses.controls; let i=index">
+                <strong>Address {{i + 1}}</strong>
+                <strong class="float-right">
+                  <button type="button" class="btn btn-outline-danger" (click)="removeAddress(i)">X</button>
+                </strong>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="i < service.selectedCustomer.addresses.length">
+                  <input type="hidden" formControlName="addressId" class="form-control inputText" id="addressId" ngModel
+                    [(ngModel)]="service.selectedCustomer.addresses[i].addressId" name="addressId">
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Line 1 </strong>
+                    <input type="text" formControlName="line1" class="form-control inputText" id="line1" ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].line1" name="line1">
+
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Line 2 </strong>
+                    <input type="text" formControlName="line2" class="form-control inputText" id="line2" ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].line2" name="line2">
+
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong for="" id='label'>Country </strong>
+                    <select type="text" formControlName='country' name='country' ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].country" class="form-control">
+                      <option>India</option>
+                      <option>Afghanistan</option>
+                      <option>American Samoa</option>
+                      <option>Andorra</option>
+                      <option>Angola</option>
+                      <option>Anguilla</option>
+                      <option>Antarctica</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">State </strong>
+                    <input type="text" formControlName="state" class="form-control inputText" id="state" ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].state" name="state">
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">City </strong>
+                    <input type="text" formControlName="city" class="form-control inputText" id="city" ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].city" name="city">
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Pincode </strong>
+                    <input type="number" formControlName="pincode" class="form-control inputText" id="pincode" ngModel
+                      [(ngModel)]="service.selectedCustomer.addresses[i].pincode" name="pincode">
+                  </div>
+                </div>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="addresses.controls.length > service.selectedCustomer.addresses.length">
+                  <input type="hidden" formControlName="addressId" class="form-control inputText" id="addressId"
+                    name="emailId">
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Line 1 </strong>
+                    <input type="text" formControlName="line1" class="form-control inputText" id="line1" name="line1">
+
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Line 2 </strong>
+                    <input type="text" formControlName="line2" class="form-control inputText" id="line2" name="line2">
+
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong for="" id='label'>Country </strong>
+                    <select type="text" formControlName='country' name='country' class="form-control">
+                      <option>India</option>
+                      <option>Afghanistan</option>
+                      <option>American Samoa</option>
+                      <option>Andorra</option>
+                      <option>Angola</option>
+                      <option>Anguilla</option>
+                      <option>Antarctica</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">State </strong>
+                    <input type="text" formControlName="state" class="form-control inputText" id="state" name="state">
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">City </strong>
+                    <input type="text" formControlName="city" class="form-control inputText" id="city" name="city">
+                  </div>
+                  <div class="form-group col-md-6 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Pincode </strong>
+                    <input type="number" formControlName="pincode" class="form-control inputText" id="pincode"
+                      name="pincode">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div formArrayName="emails">
+              <div class="mb-3 mt-2">
+                <strong>Add Email</strong> <strong class="float-right"><button type="button"
+                    class="btn btn-outline-primary" (click)="addNewEmail()">+</button></strong>
+              </div>
+              <div *ngFor="let email of emails.controls; let i=index">
+                <strong>Email {{i + 1}}</strong>
+                <strong class="float-right">
+                  <button type="button" class="btn btn-outline-danger" (click)="removeEmail(i)">X</button>
+                </strong>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="emails.controls.length <= service.selectedCustomer.emails.length">
+                  <input type="hidden" formControlName="emailId" class="form-control inputText" id="emailId" ngModel
+                    [(ngModel)]="service.selectedCustomer.emails[i].emailId" name="emailId">
+                  <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Email</strong>
+                    <input type="email" formControlName="email" class="form-control inputText" id="email" ngModel
+                      [(ngModel)]="service.selectedCustomer.emails[i].email" name="email">
+                  </div>
+                </div>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="emails.controls.length > service.selectedCustomer.emails.length">
+                  <input type="hidden" formControlName="emailId" class="form-control inputText" id="emailId"
+                    name="emailId">
+                  <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Email</strong>
+                    <input type="email" formControlName="email" class="form-control inputText" id="email" name="email">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div formArrayName="phoneNumbers">
+              <div class="mb-3 mt-2">
+                <strong>Add Phone Number</strong> <strong class="float-right"><button type="button"
+                    class="btn btn-outline-primary" (click)="addNewPhnNum()">+</button></strong>
+              </div>
+              <div *ngFor="let phoneNumber of phoneNumbers.controls; let i=index">
+                <strong>Phone Number {{i + 1}}</strong>
+                <strong class="float-right">
+                  <button type="button" class="btn btn-outline-danger" (click)="removePhoneNumber(i)">X</button>
+                </strong>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="phoneNumbers.controls.length <= service.selectedCustomer.phoneNumbers.length">
+                  <input type="hidden" formControlName="mobileId" class="form-control inputText" id="mobileId" ngModel
+                    [(ngModel)]="service.selectedCustomer.phoneNumbers[i].mobileId" name="mobileId">
+                  <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Phone Number</strong>
+                    <input type="number" formControlName="mobileNumber" class="form-control inputText" ngModel
+                      [(ngModel)]="service.selectedCustomer.phoneNumbers[i].mobileNumber" id="mobileNumber"
+                      name="mobileNumber">
+                  </div>
+                </div>
+                <div [formGroupName]="i" class="form-row mt-3 border"
+                  *ngIf="phoneNumbers.controls.length > service.selectedCustomer.phoneNumbers.length">
+                  <input type="hidden" formControlName="mobileId" class="form-control inputText" id="mobileId"
+                    name="mobileId">
+                  <div class="form-group col-md-5 ty-font user-input-wrp"> <br />
+                    <strong class="floating-label">Phone Number</strong>
+                    <input type="number" formControlName="mobileNumber" class="form-control inputText" id="mobileNumber"
+                      name="mobileNumber">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div formGroupName="documents"> -->
+
+            <div class="form-row mt-1 border">
+              <strong>Identity Proof</strong> <br>
+              <div id="upload_button">
+                <label id="fileType">
+                  <input type="file" id="identityProof" name="identityProof" (change)="selectIdProof($event)">
+                  <span id="displayImage">Upload </span>
+                </label>
+                <small style=" margin-left: 20px;"
+                  *ngIf="service.selectedCustomer.documents"><b>{{service.selectedCustomer.documents.identityProofFileName}}</b></small>
+                <small style=" margin-left: 20px;" *ngIf="!service.selectedCustomer.documents"><b>N/A</b></small>
+              </div>
+              <small><b>Allowed files: Aadhar Card, Passport, VoterId, Driving Licence</b></small>
+            </div>
+            <div class="form-row mt-1 border">
+              <strong>Address Proof</strong> <br>
+              <div id="upload_button">
+                <label id="fileType">
+                  <input type="file" id="addressProof" name="addressProof" (change)="selectAddressProof($event)">
+                  <span id="displayImage">Upload </span>
+                </label>
+                <small style=" margin-left: 20px;"
+                  *ngIf="service.selectedCustomer.documents"><b>{{service.selectedCustomer.documents.addressProofFileName}}</b></small>
+                <small style=" margin-left: 20px;" *ngIf="!service.selectedCustomer.documents"><b>N/A</b></small>
+              </div>
+              <small><b>Allowed files: Aadhar Card, Passport, Driving Licence</b></small>
+            </div>
+            <!-- </div> -->
+
+            <div class="row justify-content-around mt-4">
+              <div class="float-left ">
+                <button type="reset" class="btn btn-primary " style="width: 150px;">Reset</button>
+              </div>
+              <div class="float-right ">
+                <button type="submit" class="btn btn-primary " style="width: 150px;">Submit</button>
+              </div>
+            </div>
+          </form>
+
+
+
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

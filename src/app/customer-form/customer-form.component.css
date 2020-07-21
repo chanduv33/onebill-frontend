@@ -1,0 +1,32 @@
+input.ng-touched.ng-invalid {
+    border: 1px solid red;
+}
+input.ng-touched.ng-valid {
+    border: 1px solid green;
+}
+
+#upload_button {
+    display: inline-block;
+   
+  }
+  #upload_button input[type=file] {
+    display:none;   
+  }
+
+  #upload_button #fileType .btn{
+    margin-left: 200px;
+    background: grey;
+    height: 50px;
+    width: 150px;
+    text-align: center;
+  }
+
+  #upload_button #fileType #displayImage {
+    display: block;
+    margin-left: 200px;
+    background: grey;
+    border-radius: 3px;
+    height: 50px;
+    width: 150px;
+    text-align: center;
+  }
